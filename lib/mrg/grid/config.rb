@@ -38,6 +38,8 @@ require 'mrg/grid/config/Snapshot'
 require 'mrg/grid/config/DirtyElement'
 require 'mrg/grid/config/Store'
 
+require 'mrg/grid/util/quiescent'
+
 module Mrg
   module Grid
     module Config
