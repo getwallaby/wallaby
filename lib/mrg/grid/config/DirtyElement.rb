@@ -64,8 +64,8 @@ module Mrg
         end
         
         def to_pair
-          pair = {"kind"=>KINDS[self.kind]}
-          pair["name"] = case self.kind
+          pair = [KINDS[self.kind]]
+          pair << case self.kind
             when KIND_NODE then self.node.name
             when KIND_GROUP then self.grp.name
             when KIND_FEATURE then self.feature.name
