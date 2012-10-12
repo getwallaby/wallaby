@@ -529,7 +529,7 @@ module Mrg
         end
 
         def removeSnapshot(name)
-          check_result(@qmfo.loadSnapshot(name))
+          check_result(@qmfo.removeSnapshot(name))
           0
         end
 
