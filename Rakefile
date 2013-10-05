@@ -82,8 +82,10 @@ def commit_version
   new_version = pkg_version
   message = "bumping version from #{old_version} to #{new_version}"
   sh "git commit -m '#{message}' lib/mrg/grid/config/version.rb"
-  sh "git tag v#{new_version}"
-  sh "git push origin master v#{new_version}" 
+  unless ENV['DONT_TAG_ME_BRO']
+    sh "git tag v#{new_version}"
+    sh "git push origin master v#{new_version}" 
+  end
 end
 
 def bump_version_component(vc)
