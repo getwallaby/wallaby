@@ -300,6 +300,11 @@ fi
 
 %changelog
 
+* Sat Oct 5 2013 willb <willb@redhat> - 0.16.4-1
+- Fixes issues related to case-insensitivity of parameter names
+- Fixes issues with inventory constraints on 32-bit systems
+- Fixes packaging issues on contemporary Fedora releases
+
 * Mon Jan 7 2013 willb <willb@redhat> - 0.16.3-1
 - Fixes edge cases reported in BZ 802821
 
