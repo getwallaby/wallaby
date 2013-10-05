@@ -187,7 +187,7 @@ end
 
 file "spec/base-db.yaml" do
   branch = ENV['WALLABY_DB_BRANCH'] || "master"
-  sh "curl -L 'http://git.fedorahosted.org/git/?p=grid/wallaby-condor-db.git;a=blob_plain;f=condor-base-db.snapshot.in;hb=#{branch}' -o spec/base-db.yaml"
+  sh "curl -L 'https://raw.github.com/htcondor/wallaby-condor-db/#{branch}/condor-base-db.snapshot.in' -o spec/base-db.yaml"
 end
 
 require 'spec/rake/spectask'
@@ -233,7 +233,7 @@ end
 
 task :default => :spec
 
-require 'rake/rdoctask'
+require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ::Mrg::Grid::Config::Version.as_string
 

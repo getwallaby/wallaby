@@ -33,6 +33,13 @@
 %global ruby_appropriate_install_dir %{ruby_sitelib}
 %endif
 
+%if 0%{?fedora} >= 19 || 0%{?rhel} >= 7
+%global ruby_runtime ruby(release)
+%else
+%global ruby_runtime ruby(abi) = %{?ruby_abi}
+%endif
+
+
 %if %{building_for_el5} == 1
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
@@ -53,9 +60,11 @@ Source0: https://fedorahosted.org/releases/g/r/grid/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %endif
 BuildRequires: python2-devel
-Requires: ruby(abi) = %{?ruby_abi}
+
+Requires: %{ruby_runtime}
+
 BuildRequires: ruby
-Requires: ruby-qmf >= 0.7.929717
+Requires: ruby-qpid-qmf >= 0.7.929717
 Requires: ruby-spqr >= 0.3.6
 Requires: ruby-rhubarb >= 0.4.3
 Requires: ruby-wallaby = %{version}-%{release}
@@ -85,8 +94,8 @@ and manages multiple versions of configurations.
 %package utils
 Summary: Utilities to interact with the Wallaby service
 Group: Applications/System
-Requires: ruby(abi) = %{?ruby_abi}
-Requires: ruby-qmf >= 0.7.929717
+Requires: %{ruby_runtime}
+Requires: ruby-qpid-qmf >= 0.7.929717
 Requires: ruby-wallaby = %{version}
 
 %description utils
@@ -96,9 +105,9 @@ and node configurations and interacting with the Wallaby service.
 %package -n ruby-wallaby
 Summary: Wallaby implementation libraries, API, and client library
 Group: Applications/System
-Requires: ruby(abi) = %{?ruby_abi}
+Requires: %{ruby_runtime}
 Requires: ruby-irb
-Requires: ruby-qmf >= 0.7.929717
+Requires: ruby-qpid-qmf >= 0.7.929717
 Requires: ruby-spqr >= 0.3.5
 Requires: ruby-rhubarb >= 0.2.6
 %if %{requires_ruby_devel}
@@ -121,9 +130,9 @@ that interact with the Wallaby configuration service over QMF.
 %package -n wallaby-http-server
 Summary: Wallaby web service interface
 Group: Applications/System
-Requires: ruby(abi) = %{?ruby_abi}
+Requires: %{ruby_runtime}
 Requires: ruby-irb
-Requires: ruby-qmf >= 0.7.929717
+Requires: ruby-qpid-qmf >= 0.7.929717
 Requires: ruby-wallaby = %{version}-%{release}
 Requires: wallaby-utils = %{version}-%{release}
 Requires: rubygem-sinatra
