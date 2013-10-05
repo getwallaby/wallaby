@@ -20,6 +20,8 @@ module Mrg
         include BaseDBFixture
         
         it "should validate configurations that set must-change parameters differing only by case" do
+          pending "the fix for this problem is disabled unless WALLABY_TECH_PREVIEW is set" unless ENV['WALLABY_TECH_PREVIEW']
+          
           node = @store.getNode("foo")
           group = @store.addExplicitGroup("dedicated-resources")
           group.modifyFeatures("ADD", ["DedicatedResource", "Master", "NodeAccess"], {})

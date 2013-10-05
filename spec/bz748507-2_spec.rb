@@ -10,7 +10,7 @@ module Mrg
       describe BZ748507 do
 
         def dbtext
-          open("/var/lib/condor-wallaby-base-db/condor-base-db.snapshot", "r") {|db| db.read}
+          open("/var/lib/condor-wallaby-base-db/condor-base-db.snapshot", "r") {|db| db.read} rescue pending "No wallaby base db installed"
         end
 
         before(:each) do
