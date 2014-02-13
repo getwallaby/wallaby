@@ -1,4 +1,4 @@
-%if 0%{?fedora} >= 15
+%if 0%{?fedora} >= 18
 %global want_systemd 1
 %global wallaby_agent_environment sysconfig/wallaby-agent-env
 %else
@@ -70,10 +70,10 @@ Requires: ruby-rhubarb >= 0.4.3
 Requires: ruby-wallaby = %{version}-%{release}
 Requires: logrotate >= 0.3
 %if %{want_systemd}
-Requires(post): systemd-units
-Requires(preun): systemd-units
-Requires(postun): systemd-units
-BuildRequires: systemd-units
+Requires(post): systemd
+Requires(preun): systemd
+Requires(postun): systemd
+BuildRequires: systemd
 %else
 Requires(post): chkconfig
 Requires(preun): chkconfig
@@ -233,24 +233,14 @@ exit 0
 
 %if %{want_systemd}
 %post
-if [ $1 -eq 1 ] ; then 
-    # Initial installation 
-    /bin/systemctl daemon-reload >/dev/null 2>&1 || :
-fi
+%systemd_post wallaby.service
 
 %preun
-if [ $1 -eq 0 ] ; then
-    # Package removal, not upgrade
-    /bin/systemctl --no-reload disable wallaby.service > /dev/null 2>&1 || :
-    /bin/systemctl stop wallaby.service > /dev/null 2>&1 || :
-fi
+%systemd_preun wallaby.service
 
 %postun
-/bin/systemctl daemon-reload >/dev/null 2>&1 || :
-if [ $1 -ge 1 ] ; then
-    # Package upgrade, not uninstall
-    /bin/systemctl try-restart wallaby.service >/dev/null 2>&1 || :
-fi
+%systemd_postun_with_restart wallaby.service
+
 %else
 %post
 # This adds the proper /etc/rc*.d links for the script
@@ -299,6 +289,9 @@ fi
 %endif
 
 %changelog
+
+* Thu Feb 13 2014 willb <willb@redhat> - 0.16.4-2
+- uses new-style systemd macros (BZ850363)
 
 * Sat Oct 5 2013 willb <willb@redhat> - 0.16.4-1
 - Fixes issues related to case-insensitivity of parameter names
